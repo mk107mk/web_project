@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.StudentMapper">
+
+	<sql id="StudentColumns">
+		stuName,
+		stuNum,
+		stuPnum,
+		stuPwd,
+		stuLogcheck
+	</sql>
+
+	<insert id="insertStudent" parameterType="StudentDTO">
+		INSERT INTO student (
+			<include refid="StudentColumns" />
+		) VALUES (
+			#{stuName},
+			#{stuNum},
+			#{stuPnum},
+			#{stuPwd},
+			0
+			)
+	</insert>
+
+	<select id="selectStudent" resultType="StudentDTO">
+		select stuName, stuNum, stuPnum
+		from student
+	</select>
+	
+	<select id="findStudentPassword" parameterType="StudentDTO" resultType="StudentDTO">
+		select stuPwd
+		from student
+		where stuNum = #{stuNum}
+		and stuPnum = #{stuPnum}
+	</select>
+	
+	<select id="checkStudentLogin" parameterType ="StudentDTO" resultType ="StudentDTO">
+	
+	</select>
+	
+	<select id="selectStudentDetail" parameterType="StudentDTO" resultType="StudentDTO">
+		SELECT
+			<include refid="StudentColumns" />
+		FROM
+			student
+		WHERE
+			stuNum = #{stuNum}
+		AND
+			stuPwd = #{stuPwd}
+	</select>
+	
+	<update id="updateStudent" parameterType="StudentDTO">
+		UPDATE student
+		SET
+			stuPnum = #{stuPnum}
+		WHERE
+			stuNum = #{stuNum}
+	</update>
+	
+	<delete id="deleteStudent" parameterType="StudentDTO">
+		DELETE FROM student
+		WHERE
+			stuNum = #{stuNum}
+		and stuPwd = #{stuPwd}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<style>
+html, table{
+position: relative;
+height:100%;
+}
+</style>
+   <title>mysubject</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ 
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  </head>
+  <body>
+
+<div>
+<header style="width: 100%; height: 65px;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%; height: 100%; border-bottom-left-radius:5px; border-bottom-right-radius:5px; ">
+  <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><strong>everyday</strong></strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/write.do" style="font-size: 18px;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/insertsub/insert.do" style="font-size: 15px;">수강신청</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subtable/mysub.do"  style="font-size: 15px;">수강확인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/review/review.do"  style="font-size: 15px;">수강후기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subjectinfo/subinfo.do"  style="font-size: 15px;">강의검색</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="/student/mine.do"  style="font-size: 15px;">강의시간표</a>
+      </li>
+    </ul>
+    </div>
+    <div  style="text-align: right; margin-left: 5px; color: white; font-size: me;"><span><a href="/student/info.do">info</a></span>
+    <span>Login : </span>
+    <span th:text="${session.stu}"> </span>
+    <span style="color: #93c54b"> / </span>
+    <a href="/student/logout.do"  style="font-size: 15px;">Logout</a> </div>
+</nav>
+</header>
+</div>
+
+<div style="height:80%; width:80%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6;border-radius:5px; padding-bottom:3%; margin-bottom:3%;">
+<footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+<div style="text-align:right; width:85%; display:inline-block"><h1  ><a style="font-size:15px;"   href="/subtable/mysub.do">수강확인</a></h1></div>
+<div style="text-align:right; width:10%; display:inline-block"><h1  ><a style="font-size:15px;"   href="/subjectinfo/subinfo.do">강의검색</a></h1></div>
+<h6 style="margin-left:5%; margin-top:30px; font-size:30px;">강의조회</h6> 
+
+<div style="height:90%; width:90%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6; border-radius:5px; ">
+
+<div>
+   <table id="maintable" class="table table-borderd" style="width:90%; margin-left:auto; margin-right:auto; margin-top:2%">
+  <tbody>
+  <tr><th style="background:#E6E6E6; text-align:center;">과목</th><td  th:text="${subject.subName}" colspan="2"  ></td></tr>
+  
+   <tr><th style="background:#E6E6E6; text-align:center;">교수</th><td th:text="${pname}" colspan="2"  ></td></tr>
+  <tr><th style="background:#E6E6E6; text-align:center;">전공여부</th>
+   <th:block th:if=${subject.majorCheck!=0}>
+    <td colspan="2" >전공</td></th:block>
+      <th:block th:if=${subject.majorCheck!=1} >
+      <td colspan="2" >비전공</td></th:block></tr>
+     <tr><th style="background:#E6E6E6; text-align:center;" >학기</th>
+     <th:bock th:if="${subject.sem==11}"><td colspan="2" >19년 1학기</td></th:bock>
+     <th:bock th:if="${subject.sem==12}"><td colspan="2" >19년 2학기</td></th:bock>
+     <th:bock th:if="${subject.sem==21}"><td colspan="2" >20년 1학기</td></th:bock>
+     <th:bock th:if="${subject.sem==22}"><td colspan="2" >20년 2학기</td></th:bock>
+     </tr>
+	<tr><th style="background:#E6E6E6; text-align:center;">요일</th><td th:text="${days}" colspan="2" ></td></tr>
+	<tr><th rowspan="2"; style="background:#E6E6E6; text-align:center;  line-height:60px;">시간</th>
+	<td th:text="${startt}" ></td> <td th:text="${fint}" ></tr>
+		<tr><th:block th:if="${startt=='1교시'}"><td>9:00~10:30</td></th:block>
+		<th:block th:if="${startt=='2교시'}"><td>10:30~12:00</td></th:block>
+		<th:block th:if="${startt=='3교시'}"><td>12:00~13:30</td></th:block>
+		<th:block th:if="${startt=='4교시'}"><td>13:30~15:00</td></th:block>
+		<th:block th:if="${startt=='5교시'}"><td>15:00~16:30</td></th:block>
+		<th:block th:if="${startt=='6교시'}"><td>16:30~18:00</td></th:block>
+		<th:block th:if="${fint=='1교시'}"><td>9:00~10:30</td></th:block>
+		<th:block th:if="${fint=='2교시'}"><td>10:30~12:00</td></th:block>
+		<th:block th:if="${fint=='3교시'}"><td>12:00~13:30</td></th:block>
+		<th:block th:if="${fint=='4교시'}"><td>13:30~15:00</td></th:block>
+		<th:block th:if="${fint=='5교시'}"><td>15:00~16:30</td></th:block>
+		<th:block th:if="${fint=='6교시'}"><td>16:30~18:00</td></th:block>
+		</tr>
+
+ 
+  </tbody>
+
+</table>
+ 
+</div>
+        </div></div>
+ 
+    
+   
+  </body>
+  
+    
+
+</html>

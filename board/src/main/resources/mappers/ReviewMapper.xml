@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.ReviewMapper">
+
+	<sql id="ReviewColumns">
+		ridx,
+		rTitle,
+		rContent,
+		rScode,
+		rSnum,
+		rPwd,
+		score
+	</sql>
+
+	<insert id="insertReview" parameterType="ReviewDTO">
+		INSERT INTO review (
+			rTitle,
+		rContent,
+		rScode,
+		rSnum,
+		rPwd,
+		score
+		) VALUES (
+			#{rTitle},
+			#{rContent},
+			#{rScode},
+			#{rSnum},
+			#{rPwd},
+			#{score}
+		)
+	</insert>
+
+	<select id="selectReviewList" resultType="ReviewDTO">
+		select
+			<include refid="ReviewColumns" />
+		from
+			review
+			order by score desc
+	</select>
+	
+	<select id="selectReviewDetail" parameterType="int" resultType= "ReviewDTO">
+		select
+			<include refid="ReviewColumns" />
+		from
+			review
+		where
+			ridx = #{ridx}
+	</select>
+	
+	<select id="selectReviewStudentNum" parameterType="int" resultType="ReviewDTO">
+		SELECT
+			rSnum, rTitle, rScode, score
+		FROM
+			review
+		WHERE
+			rSnum = #{rSnum}
+	</select>
+	
+	<select id="orderReviewScore" resultType="ReviewDTO">
+		select
+			rTitle, rScode, score
+		from
+			review
+		order by
+			score DESC;
+	</select>
+	
+	<select id="selectReviewSubjectCode" parameterType="string" resultType="ReviewDTO">
+		SELECT
+			rScode, rTtile, score
+		FROM
+			review as r join subjectInfo as sub on r.rScode = sub.subCode
+		WHERE
+			sub.subName = #{subName}
+	</select>
+	
+	<update id="updateReview" parameterType="ReviewDTO">
+		UPDATE review
+		SET
+			rTitle = #{rTitle},
+			rContent = #{rContent}
+		WHERE
+			rPwd = #{rPwd}
+	</update>
+	
+	<delete id="deleteReview" parameterType="ReviewDTO">
+		DELETE FROM review
+		WHERE
+			rSnum = #{rSnum}
+		and
+			rPwd = #{rPwd}
+		and
+			ridx = #{ridx}
+	</delete>
+	
+	   <select id="searchReviewTitleName" parameterType="string" resultType="ReviewDTO">
+      SELECT
+         <include refid="ReviewColumns" />
+      FROM
+         review
+      WHERE
+         rTitle LIKE CONCAT('%', #{rTitle}, '%')
+   </select>
+	
+</mapper>

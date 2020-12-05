@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.NoticeMapper">
+
+	<sql id="NoticeColumns">
+		idx,
+		title,
+		content,
+		nScode,
+		nPnum
+	</sql>
+
+	<insert id="insertNotice" parameterType="NoticeDTO">
+		INSERT INTO notice (
+			title,
+		content,
+		nScode,
+		nPnum
+		) VALUES (
+			#{title},
+			#{content},
+			#{nScode},
+			#{nPnum}
+		)
+	</insert>
+	
+	<select id="selectNoticeStudent" parameterType="int" resultType="NoticeDTO">
+		select
+			title, nPnum, nScode
+		from
+			notice as n join subtable as st on n.nScode = st.stCode
+		where
+			st.stSnum = #{stSnum}
+	</select>
+	
+	<select id="selectNoticeDetail" parameterType="int" resultType="NoticeDTO">
+		select
+			<include refid="NoticeColumns" />
+		from
+			notice
+		where
+			idx = #{idx}
+	</select>
+	
+	<update id="updateNotice" parameterType="NoticeDTO">
+		UPDATE notice
+		SET
+			title = #{title},
+			content = #{content}
+		WHERE
+			nPnum = #{nPnum} 
+			AND 
+			idx = #{idx}
+	</update>
+	<select id="selectNoticeSubject" parameterType="int" resultType="NoticeDTO">
+		select
+			<include refid="NoticeColumns" />
+		from
+			notice
+		where
+			nScode = #{nScode}
+	</select>
+	
+	
+	
+</mapper>

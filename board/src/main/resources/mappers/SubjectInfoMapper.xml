@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.SubjectInfoMapper">
+
+	<sql id="SubjectInfoColumns">
+		subName,
+		majorCheck,
+		subGrade,
+		subCode,
+		subPnum,
+		startTime,
+		finishTime,
+		sem
+	</sql>
+
+	<select id="selectSubject" resultType="SubjectInfoDTO">
+		select
+			<include refid="SubjectInfoColumns" />
+		from subjectInfo
+	</select>
+	
+
+	
+	<select id="searchSubByProName" parameterType="string" resultType="SubjectInfoDTO">
+		select
+			<include refid="SubjectInfoColumns" />
+		from
+			subjectInfo s join professor p
+		on
+			s.subPnum = p.Pnum
+		where
+			p.pName = #{pNAME}
+		order by sem desc
+	</select>
+	
+	<select id="checkMajorSubject" parameterType="int" resultType="SubjectInfoDTO">
+		select
+			<include refid="SubjectInfoColumns" />
+		from
+			subjectInfo
+		where
+			majorCheck = #{majorCheck}
+	</select>
+	
+	<select id="selectStuSubject" parameterType="int" resultType="SubjectInfoDTO">
+		select
+			<include refid="SubjectInfoColumns" />
+		from
+			subjectInfo s join subtable st
+		on
+			s.subCode = st.stCode
+		Where
+			st.stSnum = #{stSnum}
+		order by
+			s.sem DESC
+	</select>
+	
+	<select id="searchSubjectCode" parameterType="int" resultType="SubjectInfoDTO">
+		SELECT
+			<include refid="SubjectInfoColumns" />
+		FROM
+			subjectInfo
+		WHERE
+			subCode = #{subCode}
+	</select>
+	
+		<select id="searchSubjectName" parameterType="string" resultType="SubjectInfoDTO">
+		SELECT
+			<include refid="SubjectInfoColumns" />
+		FROM
+			subjectInfo
+		WHERE
+			subName LIKE CONCAT('%', #{subName}, '%')
+	</select>
+		
+		
+		<select id="selectSubjectBySem" resultType="SubjectInfoDTO">
+		select
+			<include refid="SubjectInfoColumns" />
+		from
+			subjectInfo
+		where
+			sem = 22
+		order by
+			subCode ASC;
+	</select>
+	
+	
+	<select id="selectStuSubInfo" parameterType="int" resultType="SubjectInfoDTO">
+		select
+			subName, startTime, finishTime
+		from
+			subjectInfo join subtable on subCode = stCode
+		where
+			stSnum = #{stSnum}
+		and
+			sem = 22
+	</select>
+</mapper>

@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+  
+  
+<style>
+html {
+height:100%;
+}
+
+
+</style>
+
+
+
+   <title>insert page</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ 
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+   <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+<div>
+<header style="width: 100%; height: 65px;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%; height: 100%; border-bottom-left-radius:5px; border-bottom-right-radius:5px;">
+  <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><strong>everyday</strong></strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/write.do" style="font-size: 18px;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/insertsub/insert.do" style="font-size: 15px; 
+        background:-webkit-linear-gradient(#e55d87,#5fc3e4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;">수강신청</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subtable/mysub.do"  style="font-size: 15px;">수강확인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/review/review.do"  style="font-size: 15px;">수강후기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subjectinfo/subinfo.do"  style="font-size: 15px;">강의검색</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/student/mine.do"  style="font-size: 15px;">강의시간표</a>
+      </li>
+    </ul>
+    </div>
+    <div  style="text-align: right; margin-left: 5px; color: white; font-size: me;"><span><a href="/student/info.do">info</a></span>
+    <span>Login : </span>
+    <span th:text="${session.stu}"> </span>
+    <span style="color: #93c54b"> / </span>
+    <a href="/student/logout.do"  style="font-size: 15px;">Logout</a> </div>
+</nav>
+</header>
+
+
+
+
+</div>
+				<div>
+
+	<div  style=" height:90%; width: 60%; margin-top:30px;  float: left; 
+
+	margin-left:1.5%; margin-right:auto; 
+	border: 0.5px outset #E6E6E6;border-radius:5px;" >
+	<footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+	
+<h6 style="width:60%; margin-left:5%; margin-top:30px; font-size:30px;">수강신청</h6>
+	
+ <table class="table table-boderd" style="height:100%; width:90%; margin-left:auto; margin-right:auto; margin-top:2%;">
+  <thead>
+    <tr style="background:#E6E6E6;">
+      <th scope="col"  style="text-align: center;">과목이름</th>
+      <th scope="col"  style="text-align: center;">전공유무</th>
+      <th scope="col"  style="text-align: center;">학점</th>
+      <th scope="col"  style="text-align: center;">요일</th>
+      <th scope="col" colspan="2" style="text-align: center;">교시</th>
+      <th scope="col"  style="text-align: center;">수강신청</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="subject : ${subject}">
+      <td th:text="${subject.subName}"  style="text-align: center;">이름</td>
+      <th:block th:if=${subject.majorCheck!=0}>
+      <td  style="text-align: center;">전공</td></th:block>
+      <th:block th:if=${subject.majorCheck!=1}>
+      <td  style="text-align: center;">비전공</td></th:block>
+      <td th:text="${subject.subGrade}"  style="text-align: center;">학점</td>
+      <td th:text="${subject.day}"  style="text-align: center;">요일</td>
+      <td th:text="${subject.startTime}"  style="text-align: center;">시작교시</td>
+      <td th:text="${subject.finishTime}"  style="text-align: center;">끝교시</td>
+       <td style="text-align: center;"><button  class="btn btn-light" id="btn1" th:value="${subject.subCode}"><strong>신청</strong></button></td>
+       
+    </tr>
+  </tbody>
+</table>
+		</div >
+   </div>
+
+	<div style=" height:90%; width: 35%; margin-top:30px; float: right; 
+	margin-left:auto; margin-right:1.5%; 
+	border: 0.5px outset #E6E6E6;border-radius:5px;" >
+		<footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+<h6 style="width:35%; margin-left:5%; margin-top:30px; font-size:30px;">목록</h6>
+	
+	
+	<div id="list">
+	<th:block th:if="${addl !=null}">
+	<table class="table table-borderd" 
+	style="width:90%; margin-left:auto; 
+	margin-right:auto; margin-top:2%;">
+	
+	
+   	 <tr style="background:#E6E6E6;">
+        <th  style="text-align: center;">이름</th>
+        <th style="text-align: center;">교수</th>
+        <th style="text-align: center;">삭제</th>
+    </tr>
+    <tr th:each="entry : ${addl}">
+        <td th:text="${entry.toSubName}" style="text-align: center;"></td>
+        <td th:text="${entry.toPname}" style="text-align: center;"></td>
+          <td   style="text-align: center;"><button class="btn btn-light" style="color:red;" id="btn2" th:value="${entry.toCode}"  >삭제</button></td>
+    </tr>
+</table> 
+	</div>
+		</div>
+			
+			
+
+
+<script type="text/javascript">
+
+
+$(document).on('click','#btn1',function inputData(){
+    $.ajax({
+        url: "/insertsub/insert.do",
+        data: {subCode:$(this).val()},
+        type:"POST",
+        cache: false
+    }).done(function (fragment) {
+         $("#list").replaceWith(fragment);
+    });   
+}
+);
+
+</script>
+
+
+<script type="text/javascript">
+
+
+$(document).on('click','#btn2',function deleData(){
+    $.ajax({
+        url: "/insertsub/insert2.do",
+        data: {subCode:$(this).val()},
+        type:"POST",
+        cache: false
+    }).done(function (fragment) 
+    		{
+         $("#list").replaceWith(fragment);
+    });   
+}
+);
+
+</script>
+
+    
+</body>
+</html>

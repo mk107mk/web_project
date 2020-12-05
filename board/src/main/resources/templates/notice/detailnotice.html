@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>student home</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <style>
+html, table{
+height:100%;
+}
+
+</style>
+ 
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+   <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+<div>
+<header style="width: 100%; height: 65px;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%; height: 100%; border-bottom-left-radius:5px; border-bottom-right-radius:5px;">
+  <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><strong>everyday</strong></strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/write.do" style="font-size: 18px;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/insertsub/insert.do" style="font-size: 15px;">수강신청</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subtable/mysub.do"  style="font-size: 15px;">수강확인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/review/review.do"  style="font-size: 15px;">수강후기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subjectinfo/subinfo.do"  style="font-size: 15px;">강의검색</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/student/mine.do"  style="font-size: 15px;">강의시간표</a>
+      </li>
+    </ul>
+    </div>
+    <div  style="text-align: right; margin-left: 5px; color: white; font-size: me;"><span><a href="/student/info.do">info</a></span>
+    <span>Login : </span>
+    <span th:text="${session.stu}"> </span>
+    <span style="color: #93c54b"> / </span>
+    <a href="/student/logout.do"  style="font-size: 15px;">Logout</a> </div>
+</nav>
+</header>
+</div>
+<div style="height:80%; width:80%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6; border-radius:5px; padding-bottom:3%;">
+<h1 style="text-align:right; margin-right:5%;  "><a style="font-size:15px;"   href="/subtable/mysub.do">돌아가기</a></h1>
+<h6 style="margin-left:5%; margin-top:30px; font-size:30px;">공지사항 조회</h6>
+<div style="height:90%; width:90%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6; border-radius:5px; ">
+
+   <table class="table table-borderd "  style=" width:90%; margin-top:auto; margin-left:auto; margin-right:auto; margin-top:2%; ">
+  <thead>
+    <tr>
+    
+      <th style="text-align:center; background:#E6E6E6;">제목</th>
+      <td th:text="${notice.title}" ></td>
+    </tr>
+  </thead>
+  <tr>
+      <th style="text-align:center; background:#E6E6E6; height: 400px;" rowspan="4">내용</th>
+      <td th:text="${notice.content}" rowspan="4" style="height: 400px;">내용</td>
+    </tr>
+</table>
+</div>
+    
+    </div>
+    
+  </body>
+</html>

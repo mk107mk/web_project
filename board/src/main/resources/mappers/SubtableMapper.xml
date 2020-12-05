@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.SubtableMapper">
+
+	<sql id="SubtableColumns">
+		id,
+		stSnum,
+		stCode,
+		stGrade
+	</sql>
+
+	<insert id="insertSubtable" parameterType="SubtableDTO">
+		insert into subtable (stSnum, stCode)
+		select #{stSnum}, #{stCode}
+		from dual
+		where not exists(
+			select *
+		    from (
+				select startTime, finishTime, subCode
+        		from subtable join subjectInfo on stCode = subCode
+        		where stSnum = #{stSnum}
+        		and sem = 22
+			    ) t1, (
+				select startTime, finishTime, subCode
+       			from subjectInfo
+        		where subCode = #{stCode}
+    			) t2
+   			where (
+   					t2.startTime between t1.startTime and t1.finishTime
+				or 
+					t2.finishTime between t1.startTime and t1.finishTime
+				)
+		)
+	</insert>
+	
+	<select id="selectSubtable" parameterType="int" resultType="TotalSubDTO">
+		select id as toID, stSnum as toSnum, stCode as toCode, stGrade as toGrade,
+			subName as toSubName, pName as toPname
+		from (subtable join subjectInfo on stCode = subCode)
+		join professor on pNum = subPnum
+		where stSnum = #{stSnum}
+		order by sem desc
+	</select>
+	
+	
+	
+	<delete id="deleteSubtable" parameterType="SubtableDTO">
+		DELETE FROM subtable
+		WHERE
+			stSnum = #{stSnum}
+		and
+			stCode = #{stCode}
+	</delete>
+	
+	<update id="updateSubtable" parameterType="SubtableDTO">
+		update subtable
+		set
+			stGrade = #{stGrade}
+		where
+			id = #{id}
+	</update>
+	<select id="computeTotalGrade" parameterType="int" resultType="int">
+		select
+			sum(subGrade)
+		from
+			subtable join subjectInfo on stCode = subCode
+		where
+			stSnum = #{stSnum}
+		group by
+			stSnum
+	</select>
+	
+	<select id="computeTotalMajorGrade" parameterType="int" resultType="int">
+		select
+			sum(subGrade)
+		from
+			subtable join subjectInfo on stCode = subCode
+		where
+			stSnum = #{stSnum}
+		and
+			majorCheck = 1
+		group by
+			stSnum
+	</select>
+	
+	<select id="computeAverageTotalGrade" resultType="float">
+		select
+			round(avg(stGrade), 2)
+		from
+			subtable join subjectInfo
+		on
+			stCode = subCode
+		where
+			stSnum = #{stSnum}
+		and
+			sem between #{startSem} and #{lastSem}
+	</select>
+	
+	<select id="computeAverageTotalMajorGrade" resultType="float">
+		select
+			round(avg(stGrade), 2)
+		from
+			subtable join subjectInfo
+		on
+			stCode = subCode
+		where
+			stSnum = #{stSnum}
+		and
+			sem between #{startSem} and #{lastSem}
+		and
+			majorCheck = 1
+	</select>
+	
+	<select id="selectSubtableBySem" parameterType="int" resultType="TotalSubDTO">
+		select id as toID, stSnum as toSnum, stCode as toCode, stGrade as toGrade,
+			subName as toSubName, pName as toPname, sem as toSem
+		from (subtable join subjectInfo on stCode = subCode)
+		join professor on pNum = subPnum
+		where stSnum = #{stSnum}
+		and sem = 22
+	</select>
+	
+		<select id="searchStudentInfo" parameterType="int" resultType="StudentInfoDTO">
+		select
+			id as siIdx, stuName as siSname, stGrade as siGrade, stSnum as siSnum
+		from
+			student join subtable on stuNum = stSnum
+		where
+			stCode = #{stCode}
+	</select>
+	
+	
+</mapper>

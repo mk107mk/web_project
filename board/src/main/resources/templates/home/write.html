@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>student home</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ <style>
+  
+
+html {
+height:100%;
+}
+
+
+
+.firstin{
+height:70%;  margin-top:30px;padding-bottom:5%; float: left; 
+
+   margin-left:1.5%; margin-right:auto; 
+   border: 0.5px outset #E6E6E6;border-radius:5px;
+   width:60%;
+   height: 90%;
+min-width:720px;
+
+}
+.secondin{
+height:90%; width: 30%; margin-top:30px; float: right; 
+   margin-left:auto; margin-right:1.5%; 
+   border: 0.5px outset #E6E6E6; border-radius:5px;
+
+}
+
+
+
+
+table th{
+background:#424242;
+color:white;
+}
+
+</style>
+
+
+
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  </head>
+  <body>
+<div>
+<header style="width: 100%; height: 65px; min-width:1060px;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%; height: 100%;">
+  <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><strong>everyday</strong></strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/write.do" style="font-size: 18px;  background:-webkit-linear-gradient(#e55d87,#5fc3e4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/insertsub/insert.do" style="font-size: 15px;">수강신청</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subtable/mysub.do"  style="font-size: 15px;">수강확인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/review/review.do"  style="font-size: 15px;">수강후기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subjectinfo/subinfo.do"  style="font-size: 15px;">강의검색</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/student/mine.do"  style="font-size: 15px;">강의시간표</a>
+      </li>
+    </ul>
+    </div>
+    <div  style="text-align: right; margin-left: 5px; color: white; font-size: me;"><span><a href="/student/info.do">info</a></span>
+    <span>Login : </span>
+    <span th:text="${session.stu}"> </span>
+    <span style="color: #93c54b"> / </span>
+    <a href="/student/logout.do"  style="font-size: 15px;">Logout</a> </div>
+</nav>
+</header></div>
+<div class="firstin"> 
+
+<!-- --------------------- 학생정보 --------------------------------------------------------------------------->
+
+
+
+<!-- --------------------- 학생정보 --------------------------------------------------------------------------->
+
+<!-- 첫 번쨰 영역 ------------------------------------------------------------------->
+
+
+   <footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+   
+   <div >
+<h6 style="width:60%; margin-left:5%; margin-top:30px; font-size:30px;">학기 별 학점 차트</h6>
+   
+<input type="hidden" name="ses" th:value="${session.stu}"/>
+   <input type="hidden" name="avgG[]" th:value="${avg.avgG11}"/>
+   <input type="hidden" name="avgG[]" th:value="${avg.avgG12}"/> 
+   <input type="hidden" name="avgG[]" th:value="${avg.avgG21}"/> 
+   
+   <input type="hidden" name="avgMG[]" th:value="${avg.avgMG11}"/>
+   <input type="hidden" name="avgMG[]" th:value="${avg.avgMG12}"/> 
+   <input type="hidden" name="avgMG[]" th:value="${avg.avgMG21}"/> 
+
+
+
+
+<!--  구글차트 테스트용 -->
+
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      
+      function drawChart() {
+         
+       
+         
+         // value 는 String 자료형이지만, 차트 데이터에는 문자열을 사용할 수 없음. * 1(형변환) 처리함
+         var avgG11 = document.getElementsByName("avgG[]")[0].value * 1;
+         var avgG12 = document.getElementsByName("avgG[]")[1].value * 1;
+         var avgG21 = document.getElementsByName("avgG[]")[2].value * 1;
+         
+         var avgMG11 = document.getElementsByName("avgMG[]")[0].value * 1;
+         var avgMG12 = document.getElementsByName("avgMG[]")[1].value * 1;
+         var avgMG21 = document.getElementsByName("avgMG[]")[2].value * 1;
+         
+         var data = google.visualization.arrayToDataTable([
+              ['학기', '총 평점', '전공 평점'],
+              ['2019학년 1학기',  avgG11, avgMG11],
+              ['2019학년 2학기',  avgG12, avgMG12],
+              ['2020학년 1학기',  avgG21, avgMG21]
+            ]);
+        
+        var options = {
+          
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          vAxis : {minValue: 0}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    </div>
+    
+   <div class="chart" id="curve_chart" style=" height:500px; width:700px;margin-top:5%;" ></div>
+   </div>
+<!-- 구글차트 테스트용 끝 -->
+
+
+
+<!-- 첫 번쨰 영역  끝------------------------------------------------------------------->
+
+<!-- 두 번쨰 영역  시작------------------------------------------------------------------->
+
+<div class="secondin"  >
+      <footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+<h6 style="width:35%; margin-left:5%; margin-top:30px; font-size:30px;">학생 정보</h6>
+   <div>
+<!-- 첫 번쨰 테이블---------------------------------------------------------------- -->
+<table class="table table-border;" style="height:100%; width:90%; margin-left:auto; margin-right:auto; margin-top:2%;">
+   
+   <thead>
+   <tr> 
+      <th  colspan="2"   >수강학점 <th>
+      
+      
+   </tr>
+   <tr>
+   <td style="background:#e6e6e6; width:200px;">총 학점</td>
+<td><span th:text="${avg.totalG}" >총 학점</span><br><td></tr>
+ <tr>   <td style="background:#e6e6e6; width:200px;">전공 학점</td>
+    <td><span th:text="${avg.totalMG}">수강 전공학점</span><br><td>
+   </tr>
+   </tbody>
+</table>
+
+<!-- 첫 번쨰 테이블 끝---------------------------------------------------------------- -->
+
+<!-- 두 번쨰 테이블---------------------------------------------------------------- -->
+<table class="table table-border;" style="height:100%; width:90%; margin-left:auto; margin-right:auto; margin-top:2%;" >
+   
+   <thead>
+   <tr> 
+      <th colspan="2" >평점<th>
+      
+      
+   </tr>
+   </thead>
+   <tbody>
+   <tr><td style="background:#e6e6e6">총 평점</td><td><span th:text="${avg.avgG}"> 총 평점</span><br><td></tr>
+<tr><td style="background:#e6e6e6">19년 1학기 총 평점</td><td><span th:text="${avg.avgG11}">19년 1학기 총 평점</span><br><td></tr>
+    <tr><td style="background:#e6e6e6">19년 2학기 총 평점</td><td><span th:text="${avg.avgG12}">19년 2학기 총 평점</span><br><td></tr>
+   <tr><td style="background:#e6e6e6" >20년 1학기 총 평점</td><td><span th:text="${avg.avgG21}">20년 1학기 총 평점</span><br></tr>
+   
+   </tbody>
+</table>
+
+<!--두 번쨰 테이블 끝---------------------------------------------------------------- -->
+
+<!-- 세 번쨰 테이블 시작---------------------------------------------------------------- -->
+<table class="table table-border;" style="height:100%; width:90%; margin-left:auto; margin-right:auto; margin-top:2%;">
+   
+   <thead>
+   <tr> 
+      <th colspan="2" >전공 평점<th>
+      
+      
+   </tr>
+   </thead>
+   <tbody>
+   <tr ><td style="background:#e6e6e6">총 평점</td><td><span th:text="${avg.avgMG}"> 전공 평점</span><br><td></tr>
+<tr><td style="background:#e6e6e6">19년 1학기 총 평점</td><td><span th:text="${avg.avgMG11}">19년 1학기 전공 평점</span><br><td></tr>
+    <tr><td style="background:#e6e6e6">19년 2학기 총 평점</td><td><span th:text="${avg.avgMG12}">19년 2학기 전공 평점</span><br><td></tr>
+   <tr><td style="background:#e6e6e6; ">20년 1학기 총 평점</td><td ><span th:text="${avg.avgMG21}">20년 1학기 전공 평점</span><br></tr>
+   
+   </tbody>
+</table>
+
+<!--세 번쨰 테이블 끝---------------------------------------------------------------- -->
+
+<!-- 네 번쨰 테이블 시작---------------------------------------------------------------- -->
+
+
+
+<!--네 번쨰 테이블 끝---------------------------------------------------------------- -->
+
+</div>
+</div>
+<!-- 두 번쨰 영역 끝------------------------------------------------------------------->
+
+  </body>
+</html>

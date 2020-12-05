@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<style>
+html, table {
+height:100%;
+}
+</style>
+   <title>student home</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+
+ <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  </head>
+  <body class="backdody">
+
+ <div>
+<header style="width: 100%; height: 65px; ">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%; height: 100%; border-bottom-left-radius:5px; border-bottom-right-radius:5px;">
+  <a class="navbar-brand" href="#" style="font-size: 30px; "><strong><strong>everyday</strong></strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home/write.do" style="font-size: 18px;">Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/insertsub/insert.do" style="font-size: 15px;">수강신청</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subtable/mysub.do"  style="font-size: 15px;">수강확인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/review/review.do"  style="font-size: 15px;">수강후기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/subjectinfo/subinfo.do"  style="font-size: 15px;  background:-webkit-linear-gradient(#e55d87,#5fc3e4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;">강의검색</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/student/mine.do"  style="font-size: 15px;">강의시간표</a>
+      </li>
+    </ul>
+    </div>
+    <div  style="text-align: right; margin-left: 5px; color: white; font-size: me;"><span><a href="/student/info.do">info</a></span>
+    <span>Login : </span>
+    <span th:text="${session.stu}"> </span>
+    <span style="color: #93c54b"> / </span>
+    <a href="/student/logout.do"  style="font-size: 15px;">Logout</a> </div>
+</nav>
+</header>
+</div>
+
+
+
+<div style="height:80%; width:80%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6; border-radius:5px; padding-bottom:3%; margin-bottom:3%;">
+<footer  ><p ><strong><strong>everyday</strong></strong></p></footer>
+
+
+<!-- ---------------인라인 블록 강의검색 텍스트옆에 검색창 추가 -->
+
+<div style="display:inline-block; margin-left:5%; width:35%;">
+<h6 style=" margin-top:30px; font-size:30px;">강의검색</h6> 
+													</div>
+
+
+<div style=" display:inline-block;  width:55%; text-align:right;">
+<input type="text" size="20" placeholder="과목명" style="   height:34px; border-radius:5px;" id="sub" >
+<input type="button" class="btn btn-light"  value="검색" id="btn1"></div>
+
+
+<!-- ----------------------------------------------------------  -->
+
+
+
+
+<div  style="height:90%; width:90%; margin-top:30px; margin-left:auto; margin-right:auto; border: 0.5px outset #E6E6E6;border-radius:5px; ">
+<div id="list">
+   <table  class="table table-borderd" style="width:90%; margin-left:auto; margin-right:auto; margin-top:2%;">
+  <thead >
+    <tr style="background:#E6E6E6; ">
+    
+      <th scope="col" style="text-align: center;">과목이름</th>
+      <th scope="col" style="text-align: center;">전공유무</th>
+      <th scope="col" style="text-align: center;">학점</th>
+      <th scope="col" style="text-align: center;">상세보기</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="subject : ${subject}" >
+      <td th:text="${subject.subName}" style="text-align: center;">과목이름</td>
+      <th:block th:if=${subject.majorCheck!=0}>
+      <td style="text-align: center;">전공</td></th:block>
+      <th:block th:if=${subject.majorCheck!=1}>
+      <td style="text-align: center;">교양</td></th:block>
+      <td th:text="${subject.subGrade}" style="text-align: center;">학점</td>
+      <td style="text-align: center;"><a href="/subjectinfo/detail.do?subCode="th:attrappend="href=${subject.subCode}">상세보기</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+</div>
+    
+<script type="text/javascript">
+
+
+$(document).on('click','#btn1',function searchData(){
+    $.ajax({
+        url: "/subjectinfo/insert.do",
+        data: {subName:$("#sub").val()},
+        type:"POST",
+        cache: false
+    }).done(function (fragment) {
+         $("#list").replaceWith(fragment);
+    });   
+}
+);
+
+</script>
+    
+  
+  </body>
+  
+
+</html>

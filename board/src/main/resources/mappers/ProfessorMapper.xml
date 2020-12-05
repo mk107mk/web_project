@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.ProfessorMapper">
+
+	<sql id="ProfessorColumns">
+		pName,
+		pNum,
+		pPnum,
+		pPwd,
+		pLogcheck
+	</sql>
+
+	<insert id="insertProfessor" parameterType="ProfessorDTO">
+		INSERT INTO professor (
+			<include refid="ProfessorColumns" />
+		) VALUES (
+			#{pName},
+			#{pNum},
+			#{pPnum},
+			#{pPwd}
+			)
+	</insert>
+
+	<select id="findProfessorPassword" parameterType="ProfessorDTO" resultType="ProfessorDTO">
+		select pPwd
+		from professor
+		where pNum = #{pNum}
+		and pPnum = #{pPnum}
+	</select>
+	
+	<select id="checkProfessorLogin" parameterType ="ProfessorDTO" resultType ="ProfessorDTO">
+	
+	</select>
+	
+	<select id="selectProfessorDetail" parameterType="ProfessorDTO" resultType="ProfessorDTO">
+		SELECT
+			<include refid="ProfessorColumns" />
+		FROM
+			professor
+		WHERE
+			pNum = #{pNum}
+		AND
+			pPwd = #{pPwd}
+	</select>
+	
+	<update id="updateProfessor" parameterType="ProfessorDTO">
+		UPDATE professor
+		SET
+			pPnum = #{pPnum}
+		WHERE
+			pNum = #{pNum}
+	</update>
+	
+	<delete id="deleteProfessor" parameterType="ProfessorDTO">
+		DELETE FROM professor
+		WHERE
+			pNum = #{pNum}
+	</delete>
+	
+	<select id="selectProfessor" resultType="ProfessorDTO">
+		select pName, pNum, pPnum
+		from professor
+	</select>
+	
+	<select id="searchProfessorInfo" parameterType="int" resultType="ProfessorDTO">
+		select
+			<include refid="ProfessorColumns" />
+		from
+			professor
+		where
+			pNum = #{subPnum}
+	</select>
+	
+</mapper>
